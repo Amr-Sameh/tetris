@@ -5,6 +5,7 @@ import Graphics.Gloss.Data.ViewPort
 import Graphics.Gloss.Interface.Pure.Game
 
 
+
 width, height, offset :: Int
 width = 700
 height = 700
@@ -16,7 +17,8 @@ data Title = Game
   componentFall :: Float,
   score :: Float ,
   left :: Float ,
-  right :: Float
+  right :: Float,
+  old :: [(Float,Float)]
  }
 
 
@@ -27,18 +29,26 @@ initial = Game
  componentFall = 20,
  score = 0,
  left = 10,
- right = 10
+ right = 10,
+ old = [(50,50),(100,100),(90,90)]
  }
 
 
 render :: Title -> Picture 
 render game = pictures 
  [ 
-  walls,component (game),scale (0.2) (0.2) (translate (-1700) (1600) $ color white (text ("Score: " ++ show (score game))))
+  walls,fun1 (old game),component (game),scale (0.2) (0.2) (translate (-1700) (1600) $ color white (text ("Score: " ++ show (score game))))
  ]
- where
+fun1 xs = pictures (fun (xs))
 
-component game = uncurry translate (componentloc game) $ color blue $  rectangleSolid 10 10 
+fun [] = []
+fun ((x,y):xs) =  [ translate (x) (y) $ color blue $ rectangleSolid 10 10 ] ++ (fun xs)
+
+component game = pictures [uncurry translate (x, y) $ color blue $  rectangleSolid 10 10 ,
+ translate (x+40) (y+0) $ color blue $  rectangleSolid 10 10 ] 
+ where
+ (x,y) = (componentloc game)
+
 wallH x =  translate (x) (0) $ color  red  $ rectangleSolid 10 700
 wallV y =  translate (0) (y) $ color  red  $ rectangleSolid 700 10
 walls = pictures [wallH (-350) , wallH (350) , wallV (350) , wallV(-350)]
