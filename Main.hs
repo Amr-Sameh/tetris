@@ -30,22 +30,21 @@ initial = Game
  score = 0,
  left = 10,
  right = 10,
- old = [(50,50),(100,100),(90,90)]
+ old = []
  }
 
 
 render :: Title -> Picture 
 render game = pictures 
  [ 
-  walls,fun1 (old game),component (game),scale (0.2) (0.2) (translate (-1700) (1600) $ color white (text ("Score: " ++ show (score game))))
+  walls, draw (old game),component (game),scale (0.2) (0.2) (translate (-1700) (1600) $ color white (text ("Score: " ++ show (score game))))
  ]
-fun1 xs = pictures (fun (xs))
+draw xs = pictures (helpDraw (xs))
 
-fun [] = []
-fun ((x,y):xs) =  [ translate (x) (y) $ color blue $ rectangleSolid 10 10 ] ++ (fun xs)
+helpDraw [] = []
+helpDraw ((x,y):xs) =  [ translate (x) (y) $ color blue $ rectangleSolid 30 30 ] ++ (helpDraw xs)
 
-component game = pictures [uncurry translate (x, y) $ color blue $  rectangleSolid 10 10 ,
- translate (x+40) (y+0) $ color blue $  rectangleSolid 10 10 ] 
+component game = pictures [uncurry translate (x, y) $ color blue $  rectangleSolid 30 30  ] 
  where
  (x,y) = (componentloc game)
 
@@ -86,7 +85,7 @@ handleKeys (EventKey (SpecialKey KeyDown) _ _ _) game = game {componentloc = (z,
  where 
  (x,y) = componentloc game 
  z = x+0
- l = y-(componentFall game)
+ l = if (y-(componentFall game))>= ((-fromIntegral width /2)+20) then y-(componentFall game) else  y
 
 handleKeys _ game = game
 
@@ -97,16 +96,24 @@ checkBottm y r = y-r > -fromIntegral width /2
 
 stop :: Title -> Title
 stop game = game{
-left = if (checkLeft x 10 && checkBottm y 10) then 10 else 0 ,
-right = if (checkRight x 10 && checkBottm y 10) then 10 else 0  ,
-componentFall = if (checkBottm y 10 == False) then 0 else 20}
+left = if (checkLeft x 20 && checkBottm y 10) then 10 else 0 ,
+right = if (checkRight x 20 && checkBottm y 10) then 10 else 0  ,
+componentFall = if (checkBottm y 20 == False) then 0 else 20}
  where
     (x, y) = componentloc game
 
-
+redraw game = game {
+old = if y < ((-fromIntegral width /2)+20) then new else (old game),
+componentloc = if y < ((-fromIntegral width /2)+20) then (0,350) else (componentloc game)
+}
+ where 
+ (x, y) = (componentloc game)
+ z = [(x,y)]
+ o = (old game)
+ new = o ++ z
 main :: IO ()
 main = play window background 60 initial render handleKeys update
  where
    
 update :: Float -> Title -> Title 
-update seconds = stop . fall seconds
+update seconds = redraw . stop . fall seconds
