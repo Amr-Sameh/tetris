@@ -3,6 +3,7 @@ module Main(main) where
 import Graphics.Gloss
 import Graphics.Gloss.Data.ViewPort
 import Graphics.Gloss.Interface.Pure.Game
+import Text.Printf
 
 
 
@@ -26,10 +27,10 @@ initial :: Title
 initial = Game
  {
  componentloc = (0,300),
- componentFall = 20,
+ componentFall = 30,
  score = 0,
- left = 10,
- right = 10,
+ left = 30,
+ right = 30,
  old = []
  }
 
@@ -37,7 +38,7 @@ initial = Game
 render :: Title -> Picture 
 render game = pictures 
  [ 
-  walls, draw (old game),component (game),scale (0.2) (0.2) (translate (-1400) (1300) $ color white (text ("Score: " ++ show (score game))))
+  walls, draw (old game),component (game),scale (0.2) (0.2) (translate (-1400) (1300) $ color white (text ("Score: " ++ (printf "%.2f" (score game)))))
  ]
 draw xs = pictures (helpDraw (xs))
 
