@@ -105,7 +105,7 @@ componentFall = if (checkBottm y 20 == False) then 0 else 20}
 redraw game = game {
 old = if y < ((-fromIntegral width /2)+20) then new else (old game),
 componentloc = if y < ((-fromIntegral width /2)+20) then (0,350) else (componentloc game)
-}
+} 
  where 
  (x, y) = (componentloc game)
  z = [(x,y)]
