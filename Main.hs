@@ -7,8 +7,8 @@ import Graphics.Gloss.Interface.Pure.Game
 
 
 width, height, offset :: Int
-width = 700
-height = 700
+width = 600
+height = 600
 offset = 100
 
 data Title = Game
@@ -25,7 +25,7 @@ data Title = Game
 initial :: Title
 initial = Game
  {
- componentloc = (0,350),
+ componentloc = (0,300),
  componentFall = 20,
  score = 0,
  left = 10,
@@ -37,7 +37,7 @@ initial = Game
 render :: Title -> Picture 
 render game = pictures 
  [ 
-  walls, draw (old game),component (game),scale (0.2) (0.2) (translate (-1700) (1600) $ color white (text ("Score: " ++ show (score game))))
+  walls, draw (old game),component (game),scale (0.2) (0.2) (translate (-1400) (1300) $ color white (text ("Score: " ++ show (score game))))
  ]
 draw xs = pictures (helpDraw (xs))
 
@@ -50,7 +50,7 @@ component game = pictures [uncurry translate (x, y) $ color blue $  rectangleSol
 
 wallH x =  translate (x) (0) $ color  red  $ rectangleSolid 10 700
 wallV y =  translate (0) (y) $ color  red  $ rectangleSolid 700 10
-walls = pictures [wallH (-350) , wallH (350) , wallV (350) , wallV(-350)]
+walls = pictures [wallH (-300) , wallH (300) , wallV (300) , wallV(-300)]
 
 window :: Display
 window = InWindow "tetris" (width, height) (offset, offset)
@@ -104,7 +104,7 @@ componentFall = if (checkBottm y 20 == False) then 0 else 20}
 
 redraw game = game {
 old = if y < ((-fromIntegral width /2)+20) then new else (old game),
-componentloc = if y < ((-fromIntegral width /2)+20) then (0,350) else (componentloc game)
+componentloc = if y < ((-fromIntegral width /2)+20) then (0,300) else (componentloc game)
 } 
  where 
  (x, y) = (componentloc game)
