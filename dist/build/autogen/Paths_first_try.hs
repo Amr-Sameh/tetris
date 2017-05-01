@@ -17,7 +17,7 @@ version = Version [0,1,0,0] []
 bindir, libdir, datadir, libexecdir, sysconfdir :: FilePath
 
 bindir     = "/media/meir/CC18F3AB18F392A6/haskel/first try/.cabal-sandbox/bin"
-libdir     = "/media/meir/CC18F3AB18F392A6/haskel/first try/.cabal-sandbox/lib/x86_64-linux-ghc-7.10.3/first-try-0.1.0.0-0yg9NvdimWRL0Aw125e6lO"
+libdir     = "/media/meir/CC18F3AB18F392A6/haskel/first try/.cabal-sandbox/lib/x86_64-linux-ghc-7.10.3/first-try-0.1.0.0-3AE085yX5TvDCIfCoH7mck"
 datadir    = "/media/meir/CC18F3AB18F392A6/haskel/first try/.cabal-sandbox/share/x86_64-linux-ghc-7.10.3/first-try-0.1.0.0"
 libexecdir = "/media/meir/CC18F3AB18F392A6/haskel/first try/.cabal-sandbox/libexec"
 sysconfdir = "/media/meir/CC18F3AB18F392A6/haskel/first try/.cabal-sandbox/etc"

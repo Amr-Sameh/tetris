@@ -14,6 +14,13 @@
   (major1) == 1 && (major2) <  11 || \
   (major1) == 1 && (major2) == 11 && (minor) <= 1)
 
+/* package random-1.1 */
+#define VERSION_random "1.1"
+#define MIN_VERSION_random(major1,major2,minor) (\
+  (major1) <  1 || \
+  (major1) == 1 && (major2) <  1 || \
+  (major1) == 1 && (major2) == 1 && (minor) <= 0)
+
 /* tool alex-3.1.6 */
 #define TOOL_VERSION_alex "3.1.6"
 #define MIN_TOOL_VERSION_alex(major1,major2,minor) (\
@@ -91,5 +98,5 @@
   (major1) == 2 && (major2) <  26 || \
   (major1) == 2 && (major2) == 26 && (minor) <= 0)
 
-#define CURRENT_PACKAGE_KEY "first_0yg9NvdimWRL0Aw125e6lO"
+#define CURRENT_PACKAGE_KEY "first_3AE085yX5TvDCIfCoH7mck"
 

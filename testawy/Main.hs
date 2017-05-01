@@ -3,8 +3,8 @@ module Main(main) where
 import Graphics.Gloss
 
 width, height, offset :: Int
-width = 300
-height = 300
+width = 600
+height = 600
 offset = 100
 
 data A = B
@@ -24,7 +24,26 @@ background :: Color
 background = black
 
 drawing :: Picture
-drawing = pictures (fun ([(0,0),(30,30),(60,60)]))
+drawing = pictures (drawO (170,230))
+
+drawI (x,y) = drawIhelper 5 (x,y)
+
+drawIhelper 1 (x,y) = [ translate (x) (y*1) $ color blue $ rectangleSolid 10 10 ]
+
+drawIhelper i (x,y) = [ translate (x) (y+(10*(i-1))+(i-1)) $ color blue $ rectangleSolid 10 10 ]++drawIhelper (i-1) (x,y)
+
+
+drawL (x,y) = drawLhelper 3 (x,y)
+drawLhelper 1 (x,y) = [ translate (x) (y*1) $ color blue $ rectangleSolid 10 10 , translate (x+11) (y*1) $ color blue $ rectangleSolid 10 10 ]
+
+drawLhelper i (x,y) = [ translate (x) (y+(10*(i-1))+(i-1)) $ color blue $ rectangleSolid 10 10 ]++drawLhelper (i-1) (x,y)
+
+drawO (x,y) = drawOhelper 2 (x,y)
+
+drawOhelper 0 _ = []
+
+drawOhelper i (x,y) = [ translate (x) (y+(10*(i-1))+(i-1)) $ color blue $ rectangleSolid 10 10,  translate (x+11) (y+(10*(i-1))+(i-1)) $ color blue $ rectangleSolid 10 10]++drawOhelper (i-1) (x,y)
+
 
 fun :: [(Float, Float)] -> [Picture]
 fun [] = []
