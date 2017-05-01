@@ -151,7 +151,7 @@ componentFall = if (checkBottm y 20 == False) then 0 else 20}
 redraw game = game {
 old = if y < ((-fromIntegral width /2)+20) then new else (old game),
 componentloc = if y < ((-fromIntegral width /2)+20) then (0,300) else (componentloc game),
-shape = if y < ((-fromIntegral width /2)+20) then rand else (shape game)
+shape = if y < ((-fromIntegral width /2)+20) then (unsafePerformIO (getStdRandom (randomR (1, if(mod (length new) 2 ==0) then 3 else 2     )))) else (shape game)
 } 
  where 
  (x, y) = (componentloc game)
