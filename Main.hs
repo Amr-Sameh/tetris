@@ -21,7 +21,8 @@ data Title = Game
   left :: Float ,
   right :: Float,
   old :: [(Float,Float)],
-  shape :: Int
+  shape :: Int,
+  state :: Int
 
  }
 
@@ -35,7 +36,8 @@ initial = Game
  left = 30,
  right = 30,
  old = [],
- shape =  rand
+ shape =  rand ,
+ state = 0
  }
 
 
@@ -49,7 +51,7 @@ draw xs = pictures (helpDraw (xs))
 helpDraw [] = []
 helpDraw ((x,y):xs) =  [ translate (x) (y) $ color blue $ rectangleSolid 30 30 ] ++ (helpDraw xs)
 --call random draw func
-component game = pictures (drawrand (shape game) (x,y))
+component game = pictures (drawrand (shape game) (x,y) (state game))
  where
  (x,y) = (componentloc game)
 
@@ -62,9 +64,9 @@ walls = pictures [wallH (-300) , wallH (300) , wallV (300) , wallV(-300)]
 
 --random draw
 
-drawrand 1 (x,y) = drawI (x,y)
-drawrand 2 (x,y) = drawL (x,y)
-drawrand 3 (x,y) = drawO (x,y)
+drawrand 1 (x,y) state = drawI (x,y) state
+drawrand 2 (x,y) state = drawL (x,y) state
+drawrand 3 (x,y) state = drawO (x,y) 
 
 
 
@@ -72,14 +74,30 @@ drawrand 3 (x,y) = drawO (x,y)
 
 
 
-drawI (x,y) = drawIhelper 3 (x,y)
+drawI (x,y) 0 = drawIhelper 3 (x,y)
+drawI (x,y) 1 = drawIhelper 3 (x,y)
+drawI (x,y) 2 = drawIhelper2 3 (x,y)
+drawI (x,y) 3 = drawIhelper2 3 (x,y)
+drawI (x,y) 4 = drawIhelper 3 (x,y)
+drawI (x,y) 5 = drawIhelper 3 (x,y)
+drawI (x,y) 6 = drawIhelper2 3 (x,y)
+drawI (x,y) 7 = drawIhelper2 3 (x,y)
+
 
 drawIhelper 1 (x,y) = [ translate (x) (y*1) $ color blue $ rectangleSolid 30 30 ]
 
 drawIhelper i (x,y) = [ translate (x) (y+(30*(i-1))+(i-1)) $ color blue $ rectangleSolid 30 30 ]++drawIhelper (i-1) (x,y)
 
 
-drawL (x,y) = drawLhelper 3 (x,y)
+drawL (x,y) 0 = drawLhelper 3 (x,y)
+drawL (x,y) 1 = drawLhelper 3 (x,y)
+drawL (x,y) 2 = drawLhelper2 3 (x,y)
+drawL (x,y) 3 = drawLhelper2 3 (x,y)
+drawL (x,y) 4 = drawLhelper3 3 (x,y)
+drawL (x,y) 5 = drawLhelper3 3 (x,y)
+drawL (x,y) 6 = drawLhelper4 3 (x,y)
+drawL (x,y) 7 = drawLhelper4 3 (x,y)
+
 drawLhelper 1 (x,y) = [ translate (x) (y*1) $ color blue $ rectangleSolid 30 30 , translate (x+31) (y*1) $ color blue $ rectangleSolid 30 30 ]
 
 drawLhelper i (x,y) = [ translate (x) (y+(30*(i-1))+(i-1)) $ color blue $ rectangleSolid 30 30 ]++drawLhelper (i-1) (x,y)
@@ -91,6 +109,47 @@ drawOhelper 0 _ = []
 drawOhelper i (x,y) = [ translate (x) (y+(30*(i-1))+(i-1)) $ color blue $ rectangleSolid 30 30,  translate (x+31) (y+(30*(i-1))+(i-1)) $ color blue $ rectangleSolid 30 30]++drawOhelper (i-1) (x,y)
 
 
+
+
+--start rotat
+
+
+
+
+
+ 
+
+drawLhelper2 1 (x,y)=[ translate (x) (y*1) $ color blue $ rectangleSolid 30 30, translate (x) (y-31) $ color blue $ rectangleSolid 30 30 ]
+drawLhelper2 i (x,y)=[ translate (x+(30*(i-1))+(i-1)) (y) $ color blue $ rectangleSolid 30 30 ]++drawLhelper2 (i-1) (x,y)
+ 
+
+drawLhelper3 1 (x,y)=[ translate (x) (y*1) $ color blue $ rectangleSolid 30 30, translate (x-31) (y) $ color blue $ rectangleSolid 30 30 ]
+drawLhelper3 i (x,y)=[ translate (x) (y-(30*(i-1))-(i-1)) $ color blue $ rectangleSolid 30 30 ]++drawLhelper3 (i-1) (x,y)
+ 
+
+drawLhelper4 1 (x,y)=[ translate (x) (y*1) $ color blue $ rectangleSolid 30 30, translate (x) (y+31) $ color blue $ rectangleSolid 30 30 ]
+drawLhelper4 i (x,y)=[ translate (x-(30*(i-1))-(i-1)) (y) $ color blue $ rectangleSolid 30 30 ]++drawLhelper4 (i-1) (x,y)
+ 
+checkL1 (x,_)=if (x+23) > 300 then 0 else 1
+ 
+checkL2 (_,y)=if (y-23) > -300 then 0 else 1
+ 
+checkL3 (x,_)=if (x-23) > -300 then 0 else 1
+ 
+ 
+ 
+ 
+
+ 
+
+drawIhelper2 1 (x,y) = [ translate (x) (y*1) $ color blue $ rectangleSolid 30 30 ]
+drawIhelper2 i (x,y) = [ translate (x+(30*(i-1))+(i-1)) (y) $ color blue $ rectangleSolid 30 30 ]++drawIhelper2 (i-1) (x,y)
+ 
+
+
+
+
+--end rotate
 
 --end shapes draw
 
@@ -133,7 +192,14 @@ handleKeys (EventKey (SpecialKey KeyDown) _ _ _) game = game {componentloc = (z,
  z = x+0
  l = if (y-(componentFall game))>= ((-fromIntegral width /2)+20) then y-(componentFall game) else  y
 
+
+
+
+--rotate action 
+handleKeys (EventKey (SpecialKey KeyUp) _ _ _) game = game {state = mod ((state game)+1) 8}
+-- rotate action end
 handleKeys _ game = game
+
 
 checkLeft x y = x-y > -fromIntegral width /2
 
