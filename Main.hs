@@ -20,7 +20,7 @@ data Title = Game
   score :: Float ,
   left :: Float ,
   right :: Float,
-  old :: [(Float,Float)],
+  old :: [((Float,Float),(Int,Int))],
   shape :: Int,
   state :: Int
 
@@ -49,7 +49,7 @@ render game = pictures
 draw xs = pictures (helpDraw (xs))
 
 helpDraw [] = []
-helpDraw ((x,y):xs) =  [ translate (x) (y) $ color blue $ rectangleSolid 30 30 ] ++ (helpDraw xs)
+helpDraw (((x,y),(s,state)):xs) =  (drawrand s (x,y) state )++ (helpDraw xs)
 --call random draw func
 component game = pictures (drawrand (shape game) (x,y) (state game))
  where
@@ -217,11 +217,14 @@ componentFall = if (checkBottm y 20 == False) then 0 else 20}
 redraw game = game {
 old = if y < ((-fromIntegral width /2)+20) then new else (old game),
 componentloc = if y < ((-fromIntegral width /2)+20) then (0,300) else (componentloc game),
-shape = if y < ((-fromIntegral width /2)+20) then (unsafePerformIO (getStdRandom (randomR (1, if(mod (length new) 2 ==0) then 3 else 2     )))) else (shape game)
+shape = if y < ((-fromIntegral width /2)+20) then (unsafePerformIO (getStdRandom (randomR (1, if(mod (length new) 2 ==0) then 3 else 2     )))) else (shape game),
+state = if y < ((-fromIntegral width /2)+20) then 0 else (state game)
 } 
- where 
+ where 				
  (x, y) = (componentloc game)
- z = [(x,y)]
+ s = (shape game)
+ stat = (state game)
+ z = [((x,y),(fromIntegral s,fromIntegral stat))]
  o = (old game)
  new = o ++ z
 
